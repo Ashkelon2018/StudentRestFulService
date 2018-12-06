@@ -26,7 +26,7 @@ public class Student {
 		scores = new ConcurrentHashMap<>();
 	}
 
-	boolean addScore(String exam, int score) {
+	public boolean addScore(String exam, int score) {
 		return scores.put(exam, score) != null;
 	}
 }
