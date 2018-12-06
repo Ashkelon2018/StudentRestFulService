@@ -1,15 +1,21 @@
 package telran.ashkelon2018.student.service;
 
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
 import telran.ashkelon2018.student.dao.StudentRepository;
 import telran.ashkelon2018.student.domain.Student;
 import telran.ashkelon2018.student.dto.ScoreDto;
 import telran.ashkelon2018.student.dto.StudentDto;
 import telran.ashkelon2018.student.dto.StudentEditDto;
+import telran.ashkelon2018.student.dto.StudentForbiddenException;
+import telran.ashkelon2018.student.dto.StudentNotFoundException;
 import telran.ashkelon2018.student.dto.StudentResponseDto;
+import telran.ashkelon2018.student.dto.StudentUnauthorized;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -25,9 +31,35 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public StudentResponseDto deleteStudent(int id) {
+	public StudentResponseDto deleteStudent(int id, String token) {
+		//TODO
+		Credentials credentials = decodeToken(token);
+		if (credentials.id != id) {
+			throw new StudentForbiddenException();
+		}
 		return convertToStudentResponseDto(studentRepository
 				.removeStudent(id));
+	}
+
+	private Credentials decodeToken(String token) {
+		try {
+			int index = token.indexOf(" ");
+			token = token.substring(index + 1);
+			byte[] base64DecodeBytes = Base64.getDecoder().decode(token);
+			token = new String(base64DecodeBytes);
+			String[] auth = token.split(":");
+			Credentials credentials = 
+					new Credentials(Integer.parseInt(auth[0]),
+							auth[1]);
+			Student student = 
+					studentRepository.findStudentById(credentials.id);
+			if (!credentials.password.equals(student.getPassword())) {
+				throw new StudentUnauthorized();
+			}
+			return credentials;
+		} catch (Exception e) {
+			throw new StudentUnauthorized();
+		}
 	}
 
 	private StudentResponseDto convertToStudentResponseDto(Student student) {
@@ -74,6 +106,12 @@ public class StudentServiceImpl implements StudentService {
 				scoreDto.getScore());
 		studentRepository.editStudent(student);
 		return res;
+	}
+	
+	@AllArgsConstructor
+	private class Credentials{
+		int id;
+		String password;
 	}
 
 }

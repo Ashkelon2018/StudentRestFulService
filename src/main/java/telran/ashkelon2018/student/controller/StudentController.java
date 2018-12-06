@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import telran.ashkelon2018.student.dto.ScoreDto;
@@ -27,8 +28,9 @@ public class StudentController {
 	}
 	
 	@DeleteMapping("/student/{id}")
-	public StudentResponseDto removeStudent(@PathVariable int id) {
-		return studentService.deleteStudent(id);
+	public StudentResponseDto removeStudent(@PathVariable int id,
+			@RequestHeader("Authorization") String token) {
+		return studentService.deleteStudent(id, token);
 	}
 	
 	@PutMapping("/student/{id}")

@@ -8,7 +8,7 @@ import telran.ashkelon2018.student.dto.StudentResponseDto;
 public interface StudentService {
 	boolean addStudent(StudentDto studentDto);
 
-	StudentResponseDto deleteStudent(int id);
+	StudentResponseDto deleteStudent(int id, String token);
 
 	StudentDto editStudent(int id, StudentEditDto studentEditDto);
 	

@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import telran.ashkelon2018.student.domain.Student;
+import telran.ashkelon2018.student.dto.StudentNotFoundException;
 
-@Repository
+//@Repository
 public class StudentRepositoryMapImpl implements StudentRepository {
 	Map<Integer, Student> students = new ConcurrentHashMap<>();
 
@@ -25,7 +26,11 @@ public class StudentRepositoryMapImpl implements StudentRepository {
 
 	@Override
 	public Student findStudentById(int id) {
-		return students.get(id);
+		Student student = students.get(id);
+		if (student == null) {
+			throw new StudentNotFoundException("Student is not found");
+		}
+		return student;
 	}
 
 	@Override
