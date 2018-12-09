@@ -3,7 +3,6 @@ package telran.ashkelon2018.student.service;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import telran.ashkelon2018.student.dto.ScoreDto;
 import telran.ashkelon2018.student.dto.StudentDto;
 import telran.ashkelon2018.student.dto.StudentEditDto;
 import telran.ashkelon2018.student.dto.StudentForbiddenException;
-import telran.ashkelon2018.student.dto.StudentNotFoundException;
 import telran.ashkelon2018.student.dto.StudentResponseDto;
 import telran.ashkelon2018.student.dto.StudentUnauthorized;
 
@@ -32,7 +30,6 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public StudentResponseDto deleteStudent(int id, String token) {
-		//TODO
 		Credentials credentials = decodeToken(token);
 		if (credentials.id != id) {
 			throw new StudentForbiddenException();
@@ -72,7 +69,12 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public StudentDto editStudent(int id, StudentEditDto studentEditDto) {
+	public StudentDto editStudent(int id, StudentEditDto studentEditDto, 
+			String token) {
+		Credentials credentials = decodeToken(token);
+		if (credentials.id != id) {
+			throw new StudentForbiddenException();
+		}
 		Student student = studentRepository.
 				findStudentById(id);
 		if (studentEditDto.getName() != null) {

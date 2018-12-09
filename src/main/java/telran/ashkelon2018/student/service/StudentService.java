@@ -10,7 +10,8 @@ public interface StudentService {
 
 	StudentResponseDto deleteStudent(int id, String token);
 
-	StudentDto editStudent(int id, StudentEditDto studentEditDto);
+	StudentDto editStudent(int id,
+			StudentEditDto studentEditDto, String token);
 	
 	StudentResponseDto getStudent(int id);
 	
