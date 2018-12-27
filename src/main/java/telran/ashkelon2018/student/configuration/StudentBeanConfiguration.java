@@ -11,10 +11,10 @@ import telran.ashkelon2018.student.dao.StudentRepositoryMapImpl;
 @Configuration
 public class StudentBeanConfiguration {
 	
-	@Bean
-	public StudentRepository createStudentRepo() {
-		return new StudentRepositoryMapImpl();		
-	}
+//	@Bean
+//	public StudentRepository createStudentRepo() {
+//		return new StudentRepositoryMapImpl();		
+//	}
 	
 	@Bean
 	public ObjectMapper createObjectMapper() {
