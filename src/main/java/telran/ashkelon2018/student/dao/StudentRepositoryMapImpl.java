@@ -39,4 +39,10 @@ public class StudentRepositoryMapImpl implements StudentRepository {
 		return findStudentById(student.getId());
 	}
 
+	@Override
+	public boolean addScore(int id, String examName, int score) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -12,4 +12,6 @@ public interface StudentRepository {
 	
 	Student editStudent(Student student);
 
+	boolean addScore(int id, String examName, int score);
+
 }

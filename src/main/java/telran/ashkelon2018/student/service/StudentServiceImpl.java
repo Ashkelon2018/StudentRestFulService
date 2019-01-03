@@ -12,6 +12,7 @@ import telran.ashkelon2018.student.dto.ScoreDto;
 import telran.ashkelon2018.student.dto.StudentDto;
 import telran.ashkelon2018.student.dto.StudentEditDto;
 import telran.ashkelon2018.student.dto.StudentForbiddenException;
+import telran.ashkelon2018.student.dto.StudentNotFoundException;
 import telran.ashkelon2018.student.dto.StudentResponseDto;
 import telran.ashkelon2018.student.dto.StudentUnauthorized;
 
@@ -104,10 +105,11 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public boolean addScore(int id, ScoreDto scoreDto) {
 		Student student = studentRepository.findStudentById(id);
-		boolean res = student.addScore(scoreDto.getExamName(),
+		if (student == null) {
+			throw new StudentNotFoundException();
+		}
+		return studentRepository.addScore(id, scoreDto.getExamName(),
 				scoreDto.getScore());
-		studentRepository.editStudent(student);
-		return res;
 	}
 	
 	@AllArgsConstructor
